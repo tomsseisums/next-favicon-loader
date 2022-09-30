@@ -23,9 +23,6 @@ const defaultOptions: LoaderOptions = {
   outputPath: 'static/manifest'
 }
 
-/** Cache to not rebuild in case once has been built. */
-const cache = new Map<string, string>()
-
 // TODO: Try to get rid of `normalizePath`.
 export default async function loader(
   this: webpack.LoaderContext<LoaderOptions>,
@@ -80,15 +77,6 @@ export default async function loader(
         context: this.rootContext,
         content: sourceImage
       })
-
-      // Assemble a cache key.
-      const cacheKey = `${configHashUrl}:${imageHashUrl}`
-
-      // Return result early, if nothing has changed.
-      if (cache.has(cacheKey)) {
-        callback(null, cache.get(cacheKey))
-        return
-      }
 
       const isFull = process.env.NODE_ENV === 'production' || options.forceEmit
 
@@ -173,9 +161,6 @@ export default async function loader(
         .join(',')
 
       const result = `import * as React from 'react'; export default [${elements}]`
-
-      // Save result in cache.
-      cache.set(cacheKey, result)
 
       // Return generated source.
       callback(null, result)
