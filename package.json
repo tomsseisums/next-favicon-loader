@@ -30,17 +30,14 @@
   },
   "dependencies": {
     "favicons": "^6.2.2",
-    "loader-utils": "^2.0.0",
-    "schema-utils": "^3.1.1"
+    "loader-utils": "^2.0.0"
   },
   "devDependencies": {
     "@sync-labs/eslint-config": "^2.4.0",
     "@types/favicons": "^6.2.2",
     "@types/loader-utils": "^2.0.3",
-    "@types/webpack-env": "^1.16.2",
     "eslint": "^7.32.0",
     "next": "^12.3.1",
-    "next-compose-plugins": "^2.2.1",
     "prettier": "^2.3.2",
     "react": "^18.2.0",
     "typescript": "^4.4.2",
