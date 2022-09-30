@@ -1,7 +1,7 @@
 import { resolve, relative, dirname, join } from 'path'
 import { readFile } from 'fs/promises'
 import type * as webpack from 'webpack'
-import favicons from 'favicons'
+import favicons, { FaviconOptions } from 'favicons'
 import { interpolateName } from 'loader-utils'
 import * as Log from 'next/dist/build/output/log'
 import { normalizePath } from './utils'
@@ -15,7 +15,7 @@ export interface LoaderOptions {
   forceEmit?: boolean
 }
 
-export type SiteMetaData = Parameters<typeof favicons>[1] & {
+export type ManifestOptions = FaviconOptions & {
   sourceImage: string
 }
 
@@ -50,7 +50,7 @@ export default async function loader(
       // Load manifest settings.
       const { sourceImage: sourceImagePath, ...config } = JSON.parse(
         content
-      ) as SiteMetaData
+      ) as ManifestOptions
 
       const configHashUrl = interpolateName(this, '[name].[hash].[ext]', {
         context: this.rootContext,
