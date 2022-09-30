@@ -26,7 +26,7 @@ yarn add -D next-manifest-loader
 ```javascript
 // next.config.js
 
-const { withManifest } = require('next-manifest-loader')
+const { withManifest } = require('next-manifest-loader')(/* loader options can come here */)
 
 const nextConfig = {
   /* your Next.js config */
@@ -37,7 +37,7 @@ module.exports = withManifest(nextConfig)
 
 ## Loader Options
 
-You can adjust output path and extension used for manifest file loading by adding `manifestLoader` key to `next.config.js`:
+You can adjust these options:
 | Option | Type | Default | Description |
 | :--- | :--: | :-- | :---------- |
 | `outputPath` | string | `static/manifest` | Where to put the generated files. |
@@ -46,7 +46,9 @@ You can adjust output path and extension used for manifest file loading by addin
 
 ## Usage
 
-You can now simply create a single 512x512 or 1024x1024 png file of your favicon, add path to it in your `app.manifest` file using `sourceImage` key (relative to manifest file), require the manifest file in `_app.js` in your Next.js app, and in Dev mode a simple favicon will be set (with updating hashname so you can see the updates on refresh) and in production builds a full set of icons and browser manifest will be generated and the associated HTML react components returned.
+You can now simply create a single svg<sup>1</sup> file of your favicon, add path to it in your `app.manifest` file using `sourceImage` key (relative to manifest file), require the manifest file in `_app.js` in your Next.js app, and in Dev mode a simple favicon will be set (with updating hashname so you can see the updates on refresh) and in production builds a full set of icons and browser manifest will be generated and the associated HTML react components returned.
+
+<sup>1: Not limited to `svg`, can also make a `png`, but make sure it's bigger than 512x512.</sup>
 
 ### Example
 
@@ -103,6 +105,7 @@ Make sure to add the `d.ts` file to `include` section of `tsconfig.json` as well
 [ ] Try to make it work with `_document`
 [ ] Handle all the TODO comments in code
 [ ] Clean up repository from unncessary stuff
+[ ] CI/CD
 
 ## License
 
