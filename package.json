@@ -1,13 +1,19 @@
 {
-  "name": "next-favicon-loader",
-  "version": "3.0.5",
+  "name": "next-manifest-loader",
+  "version": "1.0.0-beta.1",
   "description": "A favicon and manfiest generator module for Next.js with built-in webpack loader",
   "license": "MIT",
-  "repository": "tinialabs/next-favicon-loader",
-  "author": "guy@tinia.org",
-  "homepage": "https://github.com/tinialabs/next-favicon-loader",
-  "main": "dist/plugin.js",
-  "types": "dist/plugin.d.ts",
+  "repository": "tomsseisums/next-manifest-loader",
+  "author": {
+    "name": "Toms Seisums",
+    "email": "toms.seisums@gmail.com"
+  },
+  "contributors": [
+    "guy@tinia.org"
+  ],
+  "homepage": "https://github.com/tomsseisums/next-manifest-loader",
+  "main": "dist/withManifest.js",
+  "types": "dist/withManifest.d.ts",
   "engines": {
     "node": ">= 10.13.0"
   },
@@ -15,26 +21,30 @@
     "build": "tsc"
   },
   "files": [
-    "plugin.js",
-    "dist"
+    "dist",
+    "module.d.ts"
   ],
   "peerDependencies": {
-    "webpack": "^4.0.0 || ^5.0.0"
+    "webpack": "^5.0.0",
+    "react": "^18.2.0"
   },
   "dependencies": {
+    "favicons": "^6.2.2",
     "loader-utils": "^2.0.0",
-    "schema-utils": "^3.1.1",
-    "favicons": "^6.2.2"
+    "schema-utils": "^3.1.1"
   },
   "devDependencies": {
-    "@types/favicons": "^6.2.2",
-    "typescript": "^4.4.2",
-    "@types/loader-utils": "^2.0.3",
     "@sync-labs/eslint-config": "^2.4.0",
+    "@types/favicons": "^6.2.2",
+    "@types/loader-utils": "^2.0.3",
     "@types/webpack-env": "^1.16.2",
     "eslint": "^7.32.0",
+    "next": "^12.3.1",
     "next-compose-plugins": "^2.2.1",
-    "prettier": "^2.3.2"
+    "prettier": "^2.3.2",
+    "react": "^18.2.0",
+    "typescript": "^4.4.2",
+    "webpack": "^5.74.0"
   },
   "keywords": [
     "webpack",

@@ -1,120 +1,101 @@
-# next-favicon-loader [![npm version](https://badgen.net/npm/v/next-favicon-loader)](https://www.npmjs.com/package/next-favicon-loader) [![license](https://badgen.net/github/license/tinialabs/next-favicon-loader)](https://github.com/tinialabs/next-favicon-loader/blob/master/LICENSE) [![downloads](https://badgen.net/npm/dt/next-favicon-loader)](https://www.npmjs.com/package/next-favicon-loader)
+# next-manifest-loader [![npm version](https://badgen.net/npm/v/next-manifest-loader)](https://www.npmjs.com/package/next-manifest-loader) [![license](https://badgen.net/github/license/tomsseisums/next-manifest-loader)](https://github.com/tomsseisums/next-manifest-loader/blob/master/LICENSE) [![downloads](https://badgen.net/npm/dt/next-manifest-loader)](https://www.npmjs.com/package/next-manifest-loader)
 
 Features:
-- **Favicon generator** Uses the `favicons` package to generate favicons and manifests on all required platforms
-- **Yaml config** Put all your site config in one place in a site.yml file in your content folder
-- **Single image input** Generates everything off a single image and the site meta data for description, colors, etc.
-- **Webpack loader** Simple installation as Next.js plugin automatically installs a dedicated webpack loader for the favicon
+- **Favicon & manifest generator** Using the [`favicons`](https://github.com/itgalaxy/favicons) package generates favicons and manifests for all required platforms
+- **Single JSON formatted file input** Generates everything off a single `favicons` config (as JSON) file import
+- **Webpack loader** Simple installation as Next.js plugin automatically installs a dedicated webpack loader for the manifest
 - **Generates HTML helmet data** Returns the HTML header links for all generated icons and manifest info 
-- **React generator** The HTML header links are already React elements ready for you to insert using `react-helmlet` or `next/head`
+- **React generator** The HTML header links are already React elements ready for you to insert using [`react-helmet`](https://github.com/nfl/react-helmet) or `next/head`
 
 ## Table of contents
 
 - [Installation](#installation)
-- [Options](#options)
+- [Options](#loader-options)
 - [Usage](#usage)
 - [License](#license)
 
 ## Installation
 
+```bash
+npm install --save-dev next-manifest-loader
+# or
+yarn add -D next-manifest-loader
 ```
-npm install next-favicon-loader next-compose-plugins
-```
-
-Add the plugin with [`next-compose-plugins`](https://github.com/cyrilwanner/next-compose-plugins) to your Next.js configuration:
 
 ```javascript
 // next.config.js
-const withPlugins = require("next-compose-plugins");
-const nextFaviconLoader = require("next-favicon-loader");
 
-module.exports = withPlugins([
-  nextFaviconLoader
-  // your other plugins here
-]);
+const { withManifest } = require("next-manifest-loader");
+
+const nextConfig = {
+  /* your Next.js config */
+}
+
+module.exports = withManifest(nextConfig)
 ```
 
-Create a site properties file that includes a manifest section in yaml
-
-``` yaml
-// docs/_config/index.yml
----
-:
-manifest:
-  appName: Novela by Narative
-  appShortName: Novela
-  appDescription: Novela by Narative
-  start_url: /
-  background: "#fff"
-  theme_color: "#fff"   
-  display: standalone
-  alwaysEmitFull: false
-:
-```
-
-## Options
-| Option |  Type | Description |
-| :--- | :--: | :---------- |
-| meta | object | The contents of the file containing the site meta data |
-| file | string |The folder where theme files including favicon are kept |
-| file | string |The absolute filename including path and extension of the base favicon used for generating |
+## Loader Options
+You can adjust output path and extension used for manifest file loading by adding `manifestLoader` key to `next.config.js`:
+| Option |  Type | Default | Description |
+| :--- | :--: | :-- | :---------- |
+| `outputPath` | string | `static/manifest` | Where to put the generated files. |
+| `forceEmit` | boolean | `false` | Development mode by default only emits single image and link tag, enable this to run the full `favicons` generation suite. |
+| `test` | RegExp | `/\.manifest$/` | Allow overriding `test` clause to use for webpack loader.  If using TypeScript, by overriding this, you also need to provide your own `declare module "*.<ext>";` type. |
 
 ## Usage
 
-You can now simply create a single 512x512 or 1024x1024 png file of your favicon, require it in at least one place on both client and server side logic in your Next.js app with a special `?favicon` resourceQuery, and in Dev mode a simple favicon will be set (with updating hashname so you can see the updates on refresh) and in production builds a full set of icons and browser manifest will be generated and the associated HTML react components returned 
+You can now simply create a single 512x512 or 1024x1024 png file of your favicon, add path to it in your `app.manifest` file using `sourceImage` key (relative to manifest file), require the manifest file in `_app.js` in your Next.js app, and in Dev mode a simple favicon will be set (with updating hashname so you can see the updates on refresh) and in production builds a full set of icons and browser manifest will be generated and the associated HTML react components returned. 
 
-### Example on client side 
+### Example
+
+Create an `app.manifest` file specifying properties for `favicons` config, additionally specifying `sourceImage` where the loader should look for the single image file to generate all icons for all platforms and sizes.
+
+```jsonc
+// app.manifest
+
+{
+  // Specify from which image to generate all icons (relative to imported file)
+  "sourceImage": "./app-icon.svg",
+  // Any config option as supported by `favicons` package
+  "appName": "Novela by Narative",
+  "appShortName": "Novela",
+  "background": "#fff",
+  "theme_color": "#fff",
+  "display": "standalone",
+}
+```
+
+_Assuming the `app.manifest` example above is put in your apps root._
 ``` js
 // pages/_app.tsx
-import '@/docs/assets/favicon.png?favicon'
-// .. rest of _app file goes here
-```
 
-### Example on server side 
-``` js
-/// pages/_document.tsx
+import type { AppProps } from 'next/app'
+import Head from 'next/head'
+import Manifest from '../app.manifest' // <-- load the manifest config
 
-import React from 'react'
-import Document, { Html, Head, Main, NextScript } from 'next/document'
-import Meta from '@/docs/assets/favicon.png?favicon'
-
-export default class MyDocument extends Document {
-  render(): JSX.Element {
-    return (
-      <Html lang="en">
-        <Head>{Meta}</Head>
-        <body>
-          <Main />
-          <NextScript />
-        </body>
-      </Html>
-    )
-  }
+export default function MyApp({ Component, pageProps }: AppProps) {
+  return (
+    <>
+      <Head>
+        {Manifest} <!-- add assembled link and meta tags to <head /> -->
+      </Head>
+      <Component {...pageProps} />
+    </>
+  )
 }
 ```
 
-``` json
-// tsconfig.json
-    "baseUrl": ".",
-    "paths": {
-      "@/docs/*": [
-        "./docs/*"
-      ]
-```
+If using TypeScript, import module type in a `d.ts` file (so TS doesn't scream when you import `app.manifest`) or provide your own declaration in case you overrode `test` regex for loader options.
 
-``` ts
-// global.d.ts
-type FaviconData = Array<any>
+Make sure to add the `d.ts` file to `include` section of `tsconfig.json` as well.
+```ts
+// types.d.ts
 
-declare module '*.png?favicon' {
-  const content: FaviconData
-
-  export default content
-}
+/// <reference types="next-manifest-loader/module" /> 
 ```
 
 ## License
 
-Licensed under the [MIT](https://github.com/tinialabs/next-favicon-loader/blob/master/LICENSE) license.
+Licensed under the [MIT](https://github.com/tomsseisums/next-manifest-loader/blob/master/LICENSE) license.
 
-© Copyright Guy Barnard and Tinia Labs contributors
+© Heavily based on [`next-favicon-loader`](https://github.com/tinialabs/next-favicon-loader) by Guy Barnard and Tinia Labs contributors
