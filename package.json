@@ -1,6 +1,6 @@
 {
   "name": "next-manifest-loader",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A favicon and manfiest generator module for Next.js with built-in webpack loader",
   "license": "MIT",
   "repository": "tomsseisums/next-manifest-loader",
