@@ -27,12 +27,12 @@ export = ({ test = /\.manifest$/, ...loaderOptions }: PluginOptions = {}) =>
           use: [
             {
               loader: path.resolve(__dirname, './loader.js'),
-              options: loaderOptions
-            }
-          ]
+              options: loaderOptions,
+            },
+          ],
         })
 
         return userWebpack(config, ...rest)
-      }
+      },
     }
   }

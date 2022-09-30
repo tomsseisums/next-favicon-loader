@@ -20,7 +20,7 @@ export type ManifestOptions = FaviconOptions & {
 }
 
 const defaultOptions: LoaderOptions = {
-  outputPath: 'static/manifest'
+  outputPath: 'static/manifest',
 }
 
 // TODO: Try to get rid of `normalizePath`.
@@ -36,9 +36,9 @@ export default async function loader(
       type: 'object',
       properties: {
         outputPath: { type: 'string' },
-        forceEmit: { type: 'boolean' }
+        forceEmit: { type: 'boolean' },
       },
-      additionalProperties: false
+      additionalProperties: false,
     })
   )
 
@@ -51,7 +51,7 @@ export default async function loader(
 
       const configHashUrl = interpolateName(this, '[name].[hash].[ext]', {
         context: this.rootContext,
-        content
+        content,
       })
 
       // Check for presence of image path.
@@ -75,7 +75,7 @@ export default async function loader(
 
       const imageHashUrl = interpolateName(this, '[name].[hash].[ext]', {
         context: this.rootContext,
-        content: sourceImage
+        content: sourceImage,
       })
 
       const isFull = process.env.NODE_ENV === 'production' || options.forceEmit
@@ -91,7 +91,7 @@ export default async function loader(
 
         this.emitFile(emitLocation, sourceImage, null, {
           isImmutable: true,
-          sourceFilename
+          sourceFilename,
         })
 
         tags = [`<link rel="icon" href="${config.path}/${imageHashUrl}">`]
@@ -105,7 +105,7 @@ export default async function loader(
 
         const assets = images.map(({ name, contents }) => ({
           name: join(options.outputPath, name),
-          contents: contents
+          contents: contents,
         }))
 
         assets.forEach(({ name, contents }) => {
@@ -148,7 +148,7 @@ export default async function loader(
             .map((x) => x.split('='))
             .map(([key, value]) => [
               key,
-              value.replace(/^"/, '').replace(/"$/, '')
+              value.replace(/^"/, '').replace(/"$/, ''),
             ])
             .concat([['key', `${i}`]])
 

@@ -33,9 +33,7 @@
     "loader-utils": "^3.2.0"
   },
   "devDependencies": {
-    "@sync-labs/eslint-config": "^2.4.0",
     "@types/loader-utils": "^2.0.3",
-    "eslint": "^8.24.0",
     "next": "^12.3.1",
     "prettier": "^2.7.1",
     "react": "^18.2.0",
