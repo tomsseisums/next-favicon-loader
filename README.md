@@ -94,10 +94,18 @@ If using TypeScript, import module type in a `d.ts` file (so TS doesn't scream w
 
 Make sure to add the `d.ts` file to `include` section of `tsconfig.json` as well.
 
-```ts
+```d.ts
 // types.d.ts
 
 /// <reference types="next-manifest-loader/module" />
+
+// or
+
+declare module '*.manifest' {
+  import React from 'react'
+  const Meta: React.ReactElement[]
+  export default Meta
+}
 ```
 
 ## TODO
