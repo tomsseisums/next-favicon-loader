@@ -94,6 +94,10 @@ Make sure to add the `d.ts` file to `include` section of `tsconfig.json` as well
 /// <reference types="next-manifest-loader/module" /> 
 ```
 
+## TODO
+[ ] Try to make it work with `_document`
+[ ] Handle all the TODO comments in code
+
 ## License
 
 Licensed under the [MIT](https://github.com/tomsseisums/next-manifest-loader/blob/master/LICENSE) license.
