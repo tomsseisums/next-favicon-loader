@@ -102,10 +102,10 @@ Make sure to add the `d.ts` file to `include` section of `tsconfig.json` as well
 
 ## TODO
 
-[ ] Try to make it work with `_document`
-[ ] Handle all the TODO comments in code
-[ ] Clean up repository from unncessary stuff
-[ ] CI/CD
+- [ ] Try to make it work with `_document`
+- [ ] Handle all the TODO comments in code
+- [ ] Clean up repository from unncessary stuff
+- [ ] CI/CD
 
 ## License
 
